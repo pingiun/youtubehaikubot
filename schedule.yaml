@@ -1,0 +1,22 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: youtubehaikubot
+spec:
+  schedule: "*/8 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: youtubehaikubot
+            image: eu.gcr.io/telegram-bots-179510/youtubehaikubot
+            env:
+            - name: POSTER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-poster
+                  key: token
+            - name: POSTER_REDIS_HOST
+              value: redis
+          restartPolicy: OnFailure
